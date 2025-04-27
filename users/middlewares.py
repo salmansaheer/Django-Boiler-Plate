@@ -1,7 +1,7 @@
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
-# from utils.request_utils import save_logout_details
+from utils.request_utils import save_logout_details
 
 class JWTAuthFromCookieMiddleware:
     def __init__(self, get_response):
@@ -45,8 +45,8 @@ class JWTAuthFromCookieMiddleware:
 
         # If tokens are flagged for deletion, remove them from cookies
         if hasattr(request, '_delete_cookies') and request._delete_cookies:
-            # if refresh_token:
-            #     save_logout_details(refresh_token, 'Refresh Token Expired')
+            if refresh_token:
+                save_logout_details(refresh_token, 'Refresh Token Expired')
             response.delete_cookie('access_token')
             response.delete_cookie('refresh_token')
 
